@@ -58,28 +58,28 @@ NSMutableDictionary *mobileInputList = nil;
 
 /// MobileInput interface
 @interface MobileInput : NSObject <UITextFieldDelegate, UITextViewDelegate> {
-    
+
     /// Current input id
     int inputId;
-    
+
     /// Input character limit
     int characterLimit;
-    
+
     /// Flat to check multiline input
     BOOL isMultiline;
-    
+
     /// Current edit component
     UIView *editView;
-    
+
     /// Link to view controller
     UIViewController *viewController;
-    
+
     /// Cached done button view
     UIToolbar *keyboardDoneButtonView;
-    
+
     /// Cached done button item
     UIBarButtonItem *doneButton;
-    
+
     /// Cached placeholder range
     NSRange placeholderRange;
 }
@@ -704,6 +704,10 @@ NSMutableDictionary *mobileInputList = nil;
         [keyboardDoneButtonView sizeToFit];
 
         UIImage *image = [[UIImage systemImageNamed:@"checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
+        UIColor *tintColor = [UIColor colorWithRed:0x61/255.0 green:0x2E/255.0 blue:0xEC/255.0 alpha:1.0];
+        image = [image imageWithTintColor:tintColor];
+
         doneButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleDone target:self action:@selector(doneClicked:)];
 
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
