@@ -82,6 +82,8 @@ NSMutableDictionary *mobileInputList = nil;
 
     /// Cached placeholder range
     NSRange placeholderRange;
+
+    UITextField* keyboardTextField;
 }
 
 /// Init MobileInput
@@ -711,7 +713,22 @@ NSMutableDictionary *mobileInputList = nil;
         doneButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleDone target:self action:@selector(doneClicked:)];
 
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:flexibleSpace, flexibleSpace, doneButton, nil]];
+        keyboardTextField = [[UITextField alloc] initWithFrame: CGRectMake(10, 0, 500, 26)];
+        keyboardTextField.keyboardType = keyType;
+        keyboardTextField.text = @"";
+        keyboardTextField.textColor = textColor;
+        keyboardTextField.backgroundColor = backgroundColor;
+        keyboardTextField.placeholder = @"Placeholder";
+        [keyboardTextField setEnabled: false];
+
+        UIView* view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 500, 32)];
+        view.layer.cornerRadius = 4;
+        view.backgroundColor = UIColor.whiteColor;
+        [view addSubview: keyboardTextField];
+
+        UIBarButtonItem* textFieldBarButton = [[UIBarButtonItem alloc] initWithCustomView:view];
+
+        [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:textFieldBarButton, flexibleSpace, flexibleSpace, doneButton, nil]];
     } else {
         keyboardDoneButtonView = nil;
     }
@@ -872,6 +889,10 @@ NSMutableDictionary *mobileInputList = nil;
     [msg setValue:TEXT_CHANGE forKey:@"msg"];
     [msg setValue:text forKey:@"text"];
     [self sendData:msg];
+
+    if (keyboardTextField != NULL) {
+        keyboardTextField.text = text;
+    }
 }
 
 /// Callback on text edit end
